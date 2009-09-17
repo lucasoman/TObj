@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @author Lucas Oman (lucas.oman@bookit.com)
+ * @author Lucas Oman (me@lucasoman.com)
  * @description Class for performing unit tests
  */
 class Tester {
