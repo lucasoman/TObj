@@ -21,7 +21,14 @@ class TObj {
 	const STATUS_ACTIVE = 1;
 	const STATUS_UNSET = 2;
 
-	// applies optional role for instantiating on the fly!
+	/**
+	 * constructs a new object capable of having traits
+	 * applied to it and applies given trait
+	 *
+	 * @author Lucas Oman <lucas.oman@bookit.com>
+	 * @param string trait name
+	 * @param array options (except, alias)
+	 */
 	public function __construct($role=null,$opts=null) {
 		$this->___applied = array();
 		$this->___traitStack = array();
@@ -31,17 +38,35 @@ class TObj {
 		}
 	}
 
-	// checks if given trait is defined
+	/**
+	 * is the given trait defined?
+	 *
+	 * @author Lucas Oman <lucas.oman@bookit.com>
+	 * @param string trait name
+	 * @return bool trait defined?
+	 */
 	static public function traitDefined($name) {
 		return isset(self::$___traits[$name]);
 	}
 
-	// checks if given "class" name is applied
+	/**
+	 * is the given trait applied to this object?
+	 *
+	 * @author Lucas Oman <lucas.oman@bookit.com>
+	 * @param string trait name
+	 * @return bool trait applied?
+	 */
 	public function applied($name) {
 		return isset($this->___applied[$name]);
 	}
 
-	// applies a role (array of things) to object
+	/**
+	 * applies trait to this object
+	 *
+	 * @author Lucas Oman <lucas.oman@bookit.com>
+	 * @param string trait name
+	 * @param array options (except, alias)
+	 */
 	public function apply($traitName,$opts=null) {
 		if (!isset(self::$___traits[$traitName])) {
 			throw new Exception('Trait "'.$traitName.'" not defined.');
@@ -101,12 +126,25 @@ class TObj {
 		}
 	}
 
-	// is it a special TObject method/attribute?
+	/**
+	 * is the given name internal to TObj?
+	 * This is a bit of a hack.
+	 *
+	 * @author Lucas Oman <lucas.oman@bookit.com>
+	 * @param string name
+	 * @return bool internal?
+	 */
 	private function isInternal($name) {
 		return (substr($name,0,3) === '___');
 	}
 
-	// is it a method or an attribute?
+	/**
+	 * is the given item a method (lambda or closure)?
+	 *
+	 * @author Lucas Oman <lucas.oman@bookit.com>
+	 * @param mixed item
+	 * @return bool is it a method?
+	 */
 	private function isMethod($item) {
 		return (is_object($item) && get_class($item) == 'Closure');
 	}
@@ -176,7 +214,15 @@ class TObj {
 		$this->___applied[$traitName][$itemName]['status'] = self::STATUS_UNSET;
 	}
 
-	// gets location of requested item (method or attribute)
+	/**
+	 * returns information about the location of given item name
+	 *
+	 * @author Lucas Oman <lucas.oman@bookit.com>
+	 * @param string name
+	 * @return array (string trait, string item, bool dictionary scope?)
+	 * Note: "dictionary scope" means that the item location was resolved
+	 * using the dictionary, not within the scope of the calling trait.
+	 */
 	private function getItemLocation($name) {
 		$dictionary = true;
 		if (empty($this->___traitStack)) {
@@ -209,22 +255,37 @@ class TObj {
 		return array($traitName,$itemName,$dictionary);
 	}
 
-	// create a new role.
-	// arguments follow this format:
-	// roleName,varOrMethName1,varOrMethValue1,varOrMethName2,varOrMethValue2,...
+	/**
+	 * creates a new trait
+	 *
+	 * @author Lucas Oman <lucas.oman@bookit.com>
+	 * @param string trait name
+	 * @param array('attrOrMethName1'=>attrOrMeth1,...)
+	 * Note that the second param can be extracted into the method call:
+	 * TObj::Trait('TraitName','attr1','attr1Value','meth1',function...)
+	 */
 	static public function Trait() {
 		$args = func_get_args();
-		$numArgs = func_num_args();
-		for ($i=0;$i<$numArgs;$i++) {
-			if ($i == 0) {
-				$name = $args[$i];
-				define($name,$name);
-				self::$___traits[$name] = array();
-			} elseif (($i % 2) == 1) {
-				$funcName = $args[$i];
-			} else {
-				self::$___traits[$name][$funcName] = $args[$i];
+		$name = array_shift($args);
+		if (is_array($args[0])) {
+			// items passed in array
+			$items = $args[0];
+		} else {
+			// items passed as args; must reformat
+			$items = array();
+			$tot = count($args);
+			for ($i=0;$i<$tot;$i++) {
+				if (($i % 2) == 0) {
+					$funcName = $args[$i];
+				} else {
+					$items[$funcName] = $args[$i];
+				}
 			}
+		}
+		// officially add the trait
+		define($name,$name);
+		foreach ($items as $funcName=>$it) {
+				self::$___traits[$name][$funcName] = $it;
 		}
 	}
 }

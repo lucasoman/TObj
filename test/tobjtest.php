@@ -13,6 +13,14 @@ TObj::Trait('MyTrait',
 		}
 		);
 
+TObj::Trait('MyArrayTrait',array(
+			'someMethod'=>function($obj) {
+				return 'yar';
+			},
+			'someAttribute'=>'blah',
+			)
+		);
+
 TObj::Trait('MyRequireTrait',
 		required,array('someNonexistentMethod')
 		);
@@ -59,6 +67,7 @@ $tester->setGroup('Defining Traits');
 $tester->test('trait defined',TObj::traitDefined('MyTrait'));
 $tester->test('trait name constant',defined('MyTrait'));
 $tester->test('second trait defined',TObj::traitDefined('MyTrait2'));
+$tester->test('can define using array',TObj::traitDefined('MyArrayTrait'));
 
 
 /*
@@ -77,6 +86,11 @@ $tester->test('applied trait',$myobj->applied(MyTrait));
 $tester->test('correct return',$myobj->returnsTestMethod(),'testMethod');
 // this method is calling another method in the trait
 $tester->test('correct return of a return',$myobj->callsReturnsTestMethod(),'testMethod');
+
+$myobj->apply(MyArrayTrait);
+
+$tester->test('applied array-defined trait',$myobj->applied(MyArrayTrait));
+$tester->test('correct return for array-defined method',$myobj->someMethod(),'yar');
 
 // this trait requires a method/attribute that doesn't exist
 try {
@@ -157,7 +171,6 @@ try {
 $myobj->attr1 = 'yarrr';
 
 $tester->test('reset unaliased',$myobj->attr1,'yarrr');
-
 $tester->test('isset aliased',isset($myobj->attr2));
 unset($myobj->attr2);
 try {
