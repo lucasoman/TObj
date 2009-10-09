@@ -17,14 +17,17 @@ class Tester {
 			$this->_startTime = microtime(true);
 			if (!$this->_silent) print("\nStarting tests...\n");
 		}
-		$this->_group = $label;
-		if (isset($this->_passes[$label])) {
-			$this->_passes[$label] = array();
-			$this->_failures[$label] = array();
+		$this->_group = (!empty($this->_groupPrefix) ? $this->_groupPrefix.': ' : '').$label;
+		if (isset($this->_passes[$this->_group])) {
+			$this->_passes[$this->_group] = array();
+			$this->_failures[$this->_group] = array();
 		}
-		if (!$this->_silent) print("* {$label}\n");
+		if (!$this->_silent) print("* {$this->_group}\n");
 		$this->openBuffer();
 	}/*}}}*/
+	public function setGroupPrefix($prefix) {
+		$this->_groupPrefix = $prefix;
+	}
 	public function test($note,$is,$shouldBe=true) {/*{{{*/
 		// does the dirty work
 		// note - description of test
@@ -213,6 +216,8 @@ class Tester {
 	private $_showFailing;
 	private $_showPassing;
 	private $_showContents;
+	private $_group;
+	private $_groupPrefix;
 	private static $_singleton;
 
 	const TESTSKIP = 0;

@@ -25,7 +25,7 @@ class TObj {
 	 * constructs a new object capable of having traits
 	 * applied to it and applies given trait
 	 *
-	 * @author Lucas Oman <lucas.oman@bookit.com>
+	 * @author Lucas Oman <me@lucasoman.com>
 	 * @param string trait name
 	 * @param array options (except, alias)
 	 */
@@ -41,7 +41,7 @@ class TObj {
 	/**
 	 * is the given trait defined?
 	 *
-	 * @author Lucas Oman <lucas.oman@bookit.com>
+	 * @author Lucas Oman <me@lucasoman.com>
 	 * @param string trait name
 	 * @return bool trait defined?
 	 */
@@ -52,7 +52,7 @@ class TObj {
 	/**
 	 * is the given trait applied to this object?
 	 *
-	 * @author Lucas Oman <lucas.oman@bookit.com>
+	 * @author Lucas Oman <me@lucasoman.com>
 	 * @param string trait name
 	 * @return bool trait applied?
 	 */
@@ -63,7 +63,7 @@ class TObj {
 	/**
 	 * applies trait to this object
 	 *
-	 * @author Lucas Oman <lucas.oman@bookit.com>
+	 * @author Lucas Oman <me@lucasoman.com>
 	 * @param string trait name
 	 * @param array options (except, alias)
 	 */
@@ -130,7 +130,7 @@ class TObj {
 	 * is the given name internal to TObj?
 	 * This is a bit of a hack.
 	 *
-	 * @author Lucas Oman <lucas.oman@bookit.com>
+	 * @author Lucas Oman <me@lucasoman.com>
 	 * @param string name
 	 * @return bool internal?
 	 */
@@ -141,7 +141,7 @@ class TObj {
 	/**
 	 * is the given item a method (lambda or closure)?
 	 *
-	 * @author Lucas Oman <lucas.oman@bookit.com>
+	 * @author Lucas Oman <me@lucasoman.com>
 	 * @param mixed item
 	 * @return bool is it a method?
 	 */
@@ -217,7 +217,7 @@ class TObj {
 	/**
 	 * returns information about the location of given item name
 	 *
-	 * @author Lucas Oman <lucas.oman@bookit.com>
+	 * @author Lucas Oman <me@lucasoman.com>
 	 * @param string name
 	 * @return array (string trait, string item, bool dictionary scope?)
 	 * Note: "dictionary scope" means that the item location was resolved
@@ -258,7 +258,7 @@ class TObj {
 	/**
 	 * creates a new trait
 	 *
-	 * @author Lucas Oman <lucas.oman@bookit.com>
+	 * @author Lucas Oman <me@lucasoman.com>
 	 * @param string trait name
 	 * @param array('attrOrMethName1'=>attrOrMeth1,...)
 	 * Note that the second param can be extracted into the method call:
