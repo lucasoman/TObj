@@ -12,6 +12,10 @@ $tester->runTests(array(
 			array('test/suite.php',Tester::TESTRUN),
 			));
 
-print($tester->getResults(true,true,false,true));
+$tester->setShowTotals();
+$tester->setShowFailing();
+$tester->setShowPassing(false);
+$tester->setShowContents();
+print($tester->getResults());
 
 ?>
